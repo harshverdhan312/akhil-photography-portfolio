@@ -8,7 +8,8 @@ import AboutArtist from './components/AboutArtist';
 import ContactSection from './components/ContactSection';
 import LightboxModal from './components/LightboxModal';
 import Footer from './components/Footer';
-import { MessageSquare, Phone, ArrowUp } from 'lucide-react';
+import MobileBottomDock from './components/MobileBottomDock';
+import { MessageSquare, Phone } from 'lucide-react';
 import { BRAND_INFO, GALLERY_ITEMS } from './data/galleryData';
 
 export default function App() {
@@ -21,7 +22,9 @@ export default function App() {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const yOffset = -70; // Header offset
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
@@ -42,7 +45,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0F0F10] text-[#F8F8F5] selection:bg-saffron-500 selection:text-graphite-950">
+    <div className="relative min-h-screen bg-[#0F0F10] text-[#F8F8F5] selection:bg-saffron-500 selection:text-graphite-950 pb-16 md:pb-0">
       {/* Film Grain Texture Overlay */}
       <div className="film-grain" />
 
@@ -61,7 +64,7 @@ export default function App() {
         {/* RECOGNITION & MARQUEE TICKER */}
         <AccoladeMarquee />
 
-        {/* PAGE 2: VISUAL STREAM (MASONRY PINTEREST WALL) */}
+        {/* PAGE 2: VISUAL STREAM (MASONRY WALL & MOBILE GRID) */}
         <VisualStream
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -71,7 +74,7 @@ export default function App() {
         {/* CURATED THEMATIC STORYBOOKS */}
         <StorybookSeries onOpenLightbox={handleOpenLightbox} />
 
-        {/* ABOUT AKHIL GUPTA (THE ARTIST STRIP) */}
+        {/* ABOUT AKHIL GUPTA (THE ARTIST STRIP & CREDENTIALS) */}
         <AboutArtist onOpenInquiry={() => handleNavigate('contact')} />
 
         {/* INQUIRY & DIRECT CONNECT SECTION */}
@@ -81,7 +84,7 @@ export default function App() {
       {/* FOOTER */}
       <Footer onNavigate={handleNavigate} />
 
-      {/* LIGHTBOX MODAL */}
+      {/* LIGHTBOX MODAL WITH MOBILE SWIPE GESTURES */}
       {activeLightboxItem && (
         <LightboxModal
           item={activeLightboxItem}
@@ -90,21 +93,27 @@ export default function App() {
         />
       )}
 
-      {/* FLOATING QUICK WHATSAPP BUTTON (Persistent Bottom Right) */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+      {/* DESKTOP FLOATING WHATSAPP BUTTON */}
+      <div className="hidden md:flex fixed bottom-6 right-6 z-40 flex-col items-end gap-3">
         <a
-          href={`https://wa.me/${BRAND_INFO.rawPhone}?text=Hi%20Akhil,%20I'm%20browsing%20your%20portfolio%20and%20would%20like%20to%20chat%20about%20a%20photography%20shoot.`}
+          href={`https://wa.me/${BRAND_INFO.rawPhone}?text=Hi%20Akhil,%20I'm%20browsing%20@${BRAND_INFO.brand}%20and%20would%20like%20to%20chat%20about%20a%20photography%20shoot.`}
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center gap-2.5 p-3.5 sm:px-4 sm:py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105 active:scale-95 border border-emerald-400/30"
+          className="group flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105 active:scale-95 border border-emerald-400/30"
           aria-label="Direct WhatsApp Chat"
         >
           <MessageSquare className="w-5 h-5 fill-current" />
-          <span className="hidden sm:inline font-sans text-xs font-bold uppercase tracking-wider">
+          <span className="font-sans text-xs font-bold uppercase tracking-wider">
             WhatsApp Akhil
           </span>
         </a>
       </div>
+
+      {/* MOBILE BOTTOM 1-THUMB ACTION DOCK */}
+      <MobileBottomDock
+        activeSection={activeSection}
+        onNavigate={handleNavigate}
+      />
     </div>
   );
 }

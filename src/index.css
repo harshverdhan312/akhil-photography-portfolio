@@ -8,16 +8,25 @@
     --color-graphite: #0F0F10;
   }
 
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+  }
+
   body {
     background-color: #0F0F10;
     color: #F8F8F5;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   /* Custom smooth scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
     background: #0F0F10;
@@ -25,7 +34,7 @@
   ::-webkit-scrollbar-thumb {
     background: #2A2A2E;
     border-radius: 4px;
-    border: 2px solid #0F0F10;
+    border: 1px solid #0F0F10;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #E67E22;
@@ -48,53 +57,46 @@
 /* Masonry column break-inside fix */
 .masonry-item {
   break-inside: avoid;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   display: inline-block;
   width: 100%;
 }
 
 /* Glassmorphic card styling */
 .glass-panel {
-  background: rgba(21, 21, 23, 0.72);
+  background: rgba(21, 21, 23, 0.78);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-pill {
-  background: rgba(28, 28, 31, 0.85);
+  background: rgba(28, 28, 31, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.glass-glow-saffron {
-  box-shadow: 0 0 30px -5px rgba(255, 153, 51, 0.25);
+/* Mobile Quick Action Dock */
+.mobile-bottom-dock {
+  background: rgba(15, 15, 16, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
 }
 
-.glass-glow-vermilion {
-  box-shadow: 0 0 30px -5px rgba(230, 57, 70, 0.25);
-}
-
-.glass-glow-peacock {
-  box-shadow: 0 0 30px -5px rgba(14, 131, 136, 0.25);
-}
-
-/* Shimmer animation */
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.animate-shimmer {
-  animation: shimmer 2s infinite linear;
-}
-
-/* Hide scrollbar for clean horizontal scrolls */
+/* Hide scrollbar for smooth horizontal touch carousels */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Touch momentum scrolling */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
 }
