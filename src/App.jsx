@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import HeroGateway from './components/HeroGateway';
-import AccoladeMarquee from './components/AccoladeMarquee';
 import VisualStream from './components/VisualStream';
-import StorybookSeries from './components/StorybookSeries';
 import AboutArtist from './components/AboutArtist';
 import ContactSection from './components/ContactSection';
 import LightboxModal from './components/LightboxModal';
 import Footer from './components/Footer';
-import MobileBottomDock from './components/MobileBottomDock';
-import { MessageSquare, Phone } from 'lucide-react';
-import { BRAND_INFO, GALLERY_ITEMS } from './data/galleryData';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -22,98 +17,58 @@ export default function App() {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
-      const yOffset = -70; // Header offset
+      const yOffset = -70;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
-  // When clicking on a split hero gateway frame
-  const handleSelectGateway = (category) => {
+  const handleSelectCategory = (category) => {
     setSelectedCategory(category);
-    handleNavigate('visual-stream');
-  };
-
-  // Open Lightbox
-  const handleOpenLightbox = (item) => {
-    setActiveLightboxItem(item);
-  };
-
-  // Close Lightbox
-  const handleCloseLightbox = () => {
-    setActiveLightboxItem(null);
+    handleNavigate('works');
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0F0F10] text-[#F8F8F5] selection:bg-saffron-500 selection:text-graphite-950 pb-16 md:pb-0">
-      {/* Film Grain Texture Overlay */}
+    <div className="relative min-h-screen bg-[#0D0D0E] text-[#EDE8DF] selection:bg-[#C07048] selection:text-[#0D0D0E] font-sans antialiased">
+      {/* Subtle Analog Film Grain Texture Overlay */}
       <div className="film-grain" />
 
-      {/* Floating Pill Navbar */}
+      {/* Minimal Header */}
       <Navbar
         activeSection={activeSection}
         onNavigate={handleNavigate}
-        onOpenInquiry={() => handleNavigate('contact')}
       />
 
-      {/* Main Content Sections */}
+      {/* Main Streamlined Sections */}
       <main>
-        {/* PAGE 1: SPLIT-GATEWAY HERO SHOWCASE */}
-        <HeroGateway onSelectGateway={handleSelectGateway} />
+        {/* ACT 1: LARGE-SCALE HERO MONOGRAPH */}
+        <HeroGateway onSelectCategory={handleSelectCategory} />
 
-        {/* RECOGNITION & MARQUEE TICKER */}
-        <AccoladeMarquee />
-
-        {/* PAGE 2: VISUAL STREAM (MASONRY WALL & MOBILE GRID) */}
+        {/* ACT 2: SELECTED WORKS (2-COLUMN EDITORIAL PLATES) */}
         <VisualStream
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
-          onOpenLightbox={handleOpenLightbox}
+          onOpenLightbox={(item) => setActiveLightboxItem(item)}
         />
 
-        {/* CURATED THEMATIC STORYBOOKS */}
-        <StorybookSeries onOpenLightbox={handleOpenLightbox} />
+        {/* ACT 3: THE ARTIST & PRACTICE */}
+        <AboutArtist />
 
-        {/* ABOUT AKHIL GUPTA (THE ARTIST STRIP & CREDENTIALS) */}
-        <AboutArtist onOpenInquiry={() => handleNavigate('contact')} />
-
-        {/* INQUIRY & DIRECT CONNECT SECTION */}
+        {/* ACT 4: COMMISSIONS & DIRECT INQUIRY */}
         <ContactSection />
       </main>
 
-      {/* FOOTER */}
-      <Footer onNavigate={handleNavigate} />
+      {/* MINIMAL FOOTER */}
+      <Footer />
 
-      {/* LIGHTBOX MODAL WITH MOBILE SWIPE GESTURES */}
+      {/* DARKROOM LIGHTBOX VIEWER */}
       {activeLightboxItem && (
         <LightboxModal
           item={activeLightboxItem}
-          onClose={handleCloseLightbox}
+          onClose={() => setActiveLightboxItem(null)}
           onNavigateItem={(newItem) => setActiveLightboxItem(newItem)}
         />
       )}
-
-      {/* DESKTOP FLOATING WHATSAPP BUTTON */}
-      <div className="hidden md:flex fixed bottom-6 right-6 z-40 flex-col items-end gap-3">
-        <a
-          href={`https://wa.me/${BRAND_INFO.rawPhone}?text=Hi%20Akhil,%20I'm%20browsing%20@${BRAND_INFO.brand}%20and%20would%20like%20to%20chat%20about%20a%20photography%20shoot.`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105 active:scale-95 border border-emerald-400/30"
-          aria-label="Direct WhatsApp Chat"
-        >
-          <MessageSquare className="w-5 h-5 fill-current" />
-          <span className="font-sans text-xs font-bold uppercase tracking-wider">
-            WhatsApp Akhil
-          </span>
-        </a>
-      </div>
-
-      {/* MOBILE BOTTOM 1-THUMB ACTION DOCK */}
-      <MobileBottomDock
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-      />
     </div>
   );
 }
